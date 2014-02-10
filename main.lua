@@ -5,7 +5,7 @@ function love.load()
 	local SmurfTileset  = love.graphics.newImage("Pictures/Tilesets/SmurfTileset.png")
 	animPlayer_Right = newAnimation(SmurfTileset, 64, 64, 0.1, 0)
 	
-    map = sti.new("Maps/test")
+    map = sti.new("Maps/Test")
 	player = 	{
 			lastState = "right",
 			x = 64,
@@ -49,7 +49,7 @@ function love.load()
 			self.y_vel = 0
 			self.standing = true
 		end
-		if event == "cieling" then
+		if event == "ceiling" then
 			self.y_vel = 0
 		end
 	end
@@ -60,12 +60,12 @@ function love.load()
 		self.state = self:getState()
 	end
 
-	function player:isColliding(layer, x, y)
+	function player:isColliding(map, x, y)
 		local collideLayer = map:getCollisionMap("Tile Layer 1")
-		local tileX, tileY = math.floor(x / 32), math.floor(y / 32)
+		local tileX, tileY = math.floor(y / 32)+1, math.floor(x / 32)+1
 		local tile = collideLayer.data[tileX][tileY]
 		
-		return not(tile == 0)
+		return not (tile == 0)
 	end
 
 
@@ -80,18 +80,18 @@ function love.load()
 		
 		local nextY = self.y + (self.y_vel*dt)
 		if self.y_vel < 0 then -- Jumping
-			if not (self:isColliding(map.layers.name["Player"], self.x - halfX, nextY - halfY))
-				and not (self:isColliding(map.layers.name["Player"], self.x + halfX - 1, nextY - halfY)) then
+			if not (self:isColliding(map, self.x - halfX, nextY - halfY))
+				and not (self:isColliding(map, self.x + halfX - 1, nextY - halfY)) then
 				self.y = nextY
 				self.standing = false
 			else
 				self.y = nextY + map.tileheight - ((nextY - halfY) % map.tileheight)
-				self:collide("cieling")
+				self:collide("ceiling")
 			end
 		end
 		if self.y_vel > 0 then -- Falling
-			if not (self:isColliding(map.layers["Player"], self.x-halfX, nextY + halfY))
-				and not(self:isColliding(map.layers["Player"], self.x + halfX - 1, nextY + halfY)) then
+			if not (self:isColliding(map, self.x-halfX, nextY + halfY))
+				and not(self:isColliding(map, self.x + halfX - 1, nextY + halfY)) then
 					self.y = nextY
 					self.standing = false
 			else
@@ -102,15 +102,15 @@ function love.load()
 		
 		local nextX = self.x + (self.x_vel * dt)
 		if self.x_vel > 0 then
-			if not(self:isColliding(map.layers["Player"], nextX + halfX, self.y - halfY))
-				and not(self:isColliding(map.layers["Player"], nextX + halfX, self.y + halfY - 1)) then
+			if not(self:isColliding(map, nextX + halfX, self.y - halfY))
+				and not(self:isColliding(map, nextX + halfX, self.y + halfY - 1)) then
 				self.x = nextX
 			else
 				self.x = nextX - ((nextX + halfX) % map.tilewidth)
 			end
 		elseif self.x_vel < 0 then
-			if not(self:isColliding(map.layers["Player"], nextX - halfX, self.y - halfY))
-				and not(self:isColliding(map.layers["Player"], nextX - halfX, self.y + halfY - 1)) then
+			if not(self:isColliding(map, nextX - halfX, self.y - halfY))
+				and not(self:isColliding(map, nextX - halfX, self.y + halfY - 1)) then
 				self.x = nextXS
 			else
 				self.x = nextX + map.tilewidth - ((nextX - halfX) % map.tilewidth)
@@ -147,6 +147,21 @@ end
 function math.clamp(low, n, high) return math.min(math.max(low, n), high) end
 
 function love.draw()
+
+
+	local collideLayer = map:getCollisionMap("Tile Layer 1")
+	local tileX, tileY = math.floor(player.x / 32), math.floor(player.y / 32)
+	local tile = collideLayer.data[19][19]
+
+	for i=1, 20 do
+		for j=1, 20 do
+			love.graphics.print(collideLayer.data[i][j], 100+i*10, 100+j*10)
+		end
+	end
+
+ 
+
+
 	if player.state == "right" then
 		animPlayer_Right:draw(player.x - player.w/2, player.y - player.h/2)
 		player.lastState = player.state
