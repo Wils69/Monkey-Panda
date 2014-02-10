@@ -1,13 +1,17 @@
 local sti = require "sti"
 require("AnAL")
+require("camera")
 
 function love.load()
 	local SmurfTileset  = love.graphics.newImage("Pictures/Tilesets/SmurfTileset.png")
 	animPlayer_Right = newAnimation(SmurfTileset, 64, 64, 0.1, 0)
+
+
 	
     map = sti.new("Maps/Test")
+	camera:setBounds(0, 0, map.width * map.tilewidth - love.graphics.getWidth(), map.height * map.tileheight - love.graphics.getHeight())
+	
 	player = 	{
-			lastState = "right",
 			x = 64,
 			y = 64,
 			x_vel = 0,
@@ -19,12 +23,12 @@ function love.load()
 			h = 64,
 			w = 64,
 			standing = false,
-			bananas = 0,
 			}
 	world = 	{
 			gravity = 1536,
 			ground = 512,
 			}
+			
 	function player:jump()
 		if self.standing then
 			self.y_vel = self.jump_vel
@@ -141,23 +145,19 @@ end
 
 function love.update(dt)
 	player:update(dt)
+	camera:setPosition( player.x - (love.graphics.getWidth()/2), player.y - (love.graphics.getHeight()/2))
     map:update(dt)
 end
 
 function math.clamp(low, n, high) return math.min(math.max(low, n), high) end
 
 function love.draw()
-
+	camera:set()
 
 	local collideLayer = map:getCollisionMap("Tile Layer 1")
 	local tileX, tileY = math.floor(player.x / 32), math.floor(player.y / 32)
 	local tile = collideLayer.data[19][19]
 
-	for i=1, 20 do
-		for j=1, 20 do
-			love.graphics.print(collideLayer.data[i][j], 100+i*10, 100+j*10)
-		end
-	end
 
  
 
@@ -178,7 +178,15 @@ function love.draw()
 	
 	local windowWidth = love.graphics.getWidth()
     local windowHeight = love.graphics.getHeight()
-	map:setDrawRange(player.x, player.y, windowWidth, windowHeight)
+
 	map:draw()
     love.graphics.setColor( 255, 255, 255 )
+	
+	camera:unset()
+end
+
+function love.keyreleased(key)
+	if (key == "a") or (key == "d") then
+		player.x_vel = 0
+	end
 end
