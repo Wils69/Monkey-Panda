@@ -6,14 +6,13 @@ function love.load()
 	local SmurfTileset  = love.graphics.newImage("Pictures/Tilesets/SmurfTileset.png")
 	animPlayer_Right = newAnimation(SmurfTileset, 64, 64, 0.1, 0)
 
-
-	
     map = sti.new("Maps/Test")
+
 	camera:setBounds(0, 0, map.width * map.tilewidth - love.graphics.getWidth(), map.height * map.tileheight - love.graphics.getHeight())
 	
 	player = 	{
-			x = 64,
-			y = 64,
+			x = 512,
+			y = 512,
 			x_vel = 0,
 			y_vel = 0,
 			jump_vel = -1024,
@@ -79,7 +78,7 @@ function love.load()
 
 		self.y_vel = self.y_vel + (world.gravity * dt)
 		
-		self.x_vel = math.clamp(self.x_vel, -self.speed, self.speed)
+		--self.x_vel = math.clamp(self.x_vel, -self.speed, self.speed)
 		self.y_vel = math.clamp(self.y_vel, -self.flySpeed, self.flySpeed)
 		
 		local nextY = self.y + (self.y_vel*dt)
@@ -115,7 +114,7 @@ function love.load()
 		elseif self.x_vel < 0 then
 			if not(self:isColliding(map, nextX - halfX, self.y - halfY))
 				and not(self:isColliding(map, nextX - halfX, self.y + halfY - 1)) then
-				self.x = nextXS
+				self.x = nextX
 			else
 				self.x = nextX + map.tilewidth - ((nextX - halfX) % map.tilewidth)
 			end
@@ -144,23 +143,30 @@ function love.load()
 end
 
 function love.update(dt)
+	if dt > 0.05 then
+		dt = 0.05
+	end
+	
+	if love.keyboard.isDown("d") then
+		player:right()
+	end
+	if love.keyboard.isDown("a") then
+		player:left()
+	end
+	if love.keyboard.isDown(" ") and not(hasJumped) then
+		player:jump()
+	end
+	
+	
 	player:update(dt)
-	camera:setPosition( player.x - (love.graphics.getWidth()/2), player.y - (love.graphics.getHeight()/2))
+	camera:setPosition(player.x - (love.graphics.getWidth()/2), player.y - (love.graphics.getHeight()/2))
     map:update(dt)
 end
 
-function math.clamp(low, n, high) return math.min(math.max(low, n), high) end
+
 
 function love.draw()
 	camera:set()
-
-	local collideLayer = map:getCollisionMap("Tile Layer 1")
-	local tileX, tileY = math.floor(player.x / 32), math.floor(player.y / 32)
-	local tile = collideLayer.data[19][19]
-
-
- 
-
 
 	if player.state == "right" then
 		animPlayer_Right:draw(player.x - player.w/2, player.y - player.h/2)
@@ -176,8 +182,6 @@ function love.draw()
 		end
 	end
 	
-	local windowWidth = love.graphics.getWidth()
-    local windowHeight = love.graphics.getHeight()
 
 	map:draw()
     love.graphics.setColor( 255, 255, 255 )
