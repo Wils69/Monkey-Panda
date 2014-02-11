@@ -2,7 +2,8 @@ local sti = require "libraries/sti"
 require("libraries/32lines")
 require("libraries/AnAL")
 require("libraries/camera")
-require("player")
+require("Player")
+require("World")
 
 function love.load()
 	local SmurfTileset  = love.graphics.newImage("Pictures/Tilesets/SmurfTileset.png")
@@ -10,10 +11,7 @@ function love.load()
     map = sti.new("Maps/Test")
 	camera:setBounds(0, 0, map.width * map.tilewidth - love.graphics.getWidth(), map.height * map.tileheight - love.graphics.getHeight())
 	player = Player:new()
-	world = 	{
-			gravity = 1536,
-			ground = 512,
-			}
+	world = World:new()
 end
 
 function love.update(dt)
@@ -30,8 +28,6 @@ function love.update(dt)
 	if love.keyboard.isDown(" ") and not(hasJumped) then
 		player:jump()
 	end
-	
-	
 	player:update(dt)
 	camera:setPosition(player.x - (love.graphics.getWidth()/2), player.y - (love.graphics.getHeight()/2))
     map:update(dt)

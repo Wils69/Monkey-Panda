@@ -1,15 +1,15 @@
 class "Player" {
-		x = 512,
-		y = 512,
-		x_vel = 0,
-		y_vel = 0,
-		jump_vel = -1024,
-		speed = 512,
-		flySpeed = 700,
-		state = "",
-		h = 64,
-		w = 64,
-		standing = false,
+	x = 512,
+	y = 512,
+	x_vel = 0,
+	y_vel = 0,
+	jump_vel = -1024,
+	speed = 512,
+	flySpeed = 700,
+	state = "",
+	h = 64,
+	w = 64,
+	standing = false,
 }
 
 --movement
