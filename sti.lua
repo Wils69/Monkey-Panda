@@ -469,14 +469,16 @@ function Map:drawObjectLayer(layer)
 		local y = layer.y + object.y
 		
 		if object.shape == "rectangle" then
-			love.graphics.setColor(fill)
-			love.graphics.rectangle("fill", x, y, object.width, object.height)
+			Banana = love.graphics.newImage("Pictures/Tilesets/BananaTileset.png" )
+			love.graphics.draw(Banana, x, y, 0, 1, 1)
+			--love.graphics.setColor(fill)
+			--love.graphics.rectangle("fill", x, y, object.width, object.height)
 			
-			love.graphics.setColor(shadow)
-			love.graphics.rectangle("line", x+1, y+1, object.width, object.height)
+			--love.graphics.setColor(shadow)
+			--love.graphics.rectangle("line", x+1, y+1, object.width, object.height)
 			
-			love.graphics.setColor(line)
-			love.graphics.rectangle("line", x, y, object.width, object.height)
+			--love.graphics.setColor(line)
+			--love.graphics.rectangle("line", x, y, object.width, object.height)
 		elseif object.shape == "ellipse" then
 			self:drawEllipse("fill", x, y, object.width, object.height, fill)
 			self:drawEllipseOutline(x+1, y+1, object.width, object.height, shadow)

@@ -20,6 +20,19 @@ return {
       imageheight = 32,
       properties = {},
       tiles = {}
+    },
+    {
+      name = "BananaTileset",
+      firstgid = 5,
+      tilewidth = 32,
+      tileheight = 64,
+      spacing = 0,
+      margin = 0,
+      image = "../Pictures/Tilesets/BananaTileset.png",
+      imagewidth = 128,
+      imageheight = 64,
+      properties = {},
+      tiles = {}
     }
   },
   layers = {
@@ -75,6 +88,63 @@ return {
         1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
         1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+      }
+    },
+    {
+      type = "objectgroup",
+      name = "Interactive",
+      visible = true,
+      opacity = 1,
+      properties = {},
+      objects = {
+        {
+          name = "Banana",
+          type = "Pickup",
+          shape = "rectangle",
+          x = 283,
+          y = 1233,
+          width = 0,
+          height = 0,
+          gid = 5,
+          visible = true,
+          properties = {}
+        },
+        {
+          name = "Banana",
+          type = "Pickup",
+          shape = "rectangle",
+          x = 361,
+          y = 1159,
+          width = 0,
+          height = 0,
+          gid = 5,
+          visible = true,
+          properties = {}
+        },
+        {
+          name = "Banana",
+          type = "Pickup",
+          shape = "rectangle",
+          x = 544,
+          y = 1151,
+          width = 0,
+          height = 0,
+          gid = 5,
+          visible = true,
+          properties = {}
+        },
+        {
+          name = "Banana",
+          type = "Pickup",
+          shape = "rectangle",
+          x = 620,
+          y = 1245,
+          width = 0,
+          height = 0,
+          gid = 5,
+          visible = true,
+          properties = {}
+        }
       }
     }
   }
